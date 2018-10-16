@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+# 功能:
+#   以不同的颜色显示文本中的不同的列
+#
+# 用法:
+#   __file__ FILE
+#   command | __file__
+#
+# 时间:
+#   - 2018-10-16
+#     * 增加-h选项
+#
+#   - 2018-10-12
+#     * 增加从stdin读的功能
+#     * 增加help()函数
+#
+#   - 2018-10-10
+#     程序末尾取消颜色显示
+#
+#   - 2018-10-09
+#     v1.0
+
+import os
+import sys
+
+def help():
+	prog = os.path.basename(__file__)
+	message = """Usage:
+	{} FILE
+	command | {}"""
+	print(message.format(prog, prog))
+
+argc = len(sys.argv)
+if argc == 1:
+	fin = sys.stdin	
+elif argc == 2:
+	if sys.argv[1] == "-h":	
+		help()
+		exit(0)
+
+	inputfile = sys.argv[1]
+	fin = open(inputfile, 'r')
+else:
+	help()
+	exit(0)
+
+colors = [31, 37, 33, 34, 35, 36, 32]
+colors_len = len(colors)
+
+line = fin.readline()
+isFirstLine = True
+while line:
+	if isFirstLine:
+		pass
+	else:
+		print()
+
+	line = line.strip()
+
+	fields = line.split()
+	counter = 0
+	for field in fields:
+		index = counter % colors_len
+		colorCode = "\033[{}m".format(colors[index])
+		counter += 1
+		print(colorCode + field, end=' \t')
+
+	isFirstLine = False
+	line = fin.readline()
+
+print("\033[0m")
+fin.close()
