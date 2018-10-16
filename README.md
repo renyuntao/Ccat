@@ -5,7 +5,7 @@
 # 用法
 
 ```bash
-$ mycat FILE
-$ command | mycat
-$ mycat -h
+$ Ccat FILE
+$ command | Ccat
+$ Ccat -h
 ```
